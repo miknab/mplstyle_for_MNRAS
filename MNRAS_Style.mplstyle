@@ -82,6 +82,13 @@ text.latex.preamble : \usepackage{mathptmx} # IMPROPER USE OF THIS FEATURE WILL 
                             # type1cm, textcomp. Adobe Postscript (PSSNFS) font packages
                             # may also be loaded, depending on your font settings
 
+
+### FIGURE
+figure.figsize   	 : 6.973848069738481, 4.310075139476229 ## figure size in inche
+figure.subplot.hspace: 0.01
+
+### IMAGES
+image.cmap			: viridis
 ### AXES
 # default face and edge color, default tick sizes,
 # default fontsizes for ticklabels, and so on.  See

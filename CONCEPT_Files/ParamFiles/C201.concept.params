@@ -1,0 +1,75 @@
+# This is the default parameter file used by the CLASS utility.
+# It is set up to yield cosmologies with neutrinos,
+# the masses of which is specified in _mν below.
+# The number of neutrinos is inferred from the number of
+# elements in _mν. Masses of zero are allowed.
+# Specifying the same mass for multiple neutrinos result in a
+# single degenerate neutrino species.
+_w0 = -1.000000000
+_wa = 0.000000000
+_mν = [0.025000000, 0.025000000, 0.025000000]  # Neutrino masses in eV
+_precision = 100
+
+_k_min   = 5e-5*h/Mpc
+_k_max   = 45*h/Mpc
+_k_modes = 256
+
+# Input
+output_dirs = {'powerspec': paths['output_dir'] + f'/C201/'}
+
+# Numerical parameters
+boxsize = 2*pi/_k_min
+φ_gridsize = int(2/sqrt(3)*_k_max/_k_min + 1)
+φ_gridsize += 1 if φ_gridsize%2 else 0
+modes_per_decade = _k_modes/log10(_k_max/_k_min)
+
+# Cosmology
+H0      = 67.000000000*km/(s*Mpc)
+Ωcdm    = 0.270000000 - Ων
+Ωb      = 0.050000000
+a_begin = 1/(1 + 250)
+class_params = {
+      # Photons and neutrino precision parameters
+      'radiation_streaming_approximation': 3,
+      'ur_fluid_approximation'           : 3,
+      'l_max_g'                          : 1001,
+      'l_max_pol_g'                      : 1001,
+      'l_max_ur'                         : 1001,
+      # Add neutrino hierarchy
+      'N_ur'    : 0,
+      'N_ncdm'  : len(set(_mν)),
+      'deg_ncdm': [_mν.count(mν) for mν in sorted(set(_mν))],
+      'm_ncdm'  : [mν if mν else 1e-100 for mν in sorted(set(_mν))],
+      'T_ncdm'  : [(4/11)**(1/3)*(3.046/len(_mν))**(1/4)]*len(set(_mν)),  # Ensure N_eff = 3.046
+      # Neutrino precision parameters
+      'ncdm_fluid_approximation': 3,
+      'Quadrature strategy'     : [3]*len(set(_mν)),
+      'l_max_ncdm'              : 2*_precision+1,
+      'Number of momentum bins' : [min([_precision, 50])]*len(set(_mν)),
+      'Maximum q'               : [18]*len(set(_mν)),
+      # General precision parameters
+      'evolver'                     : 0,
+      'recfast_Nz0'                 : 1e+5,
+      'tol_thermo_integration'      : 1e-6,
+      'perturb_integration_stepsize': 0.25,
+      'perturb_sampling_stepsize'   : 0.01,
+}
+
+# fld
+class_params.update({
+      'Omega_Lambda': 0,
+      'w0_fld'      : _w0,
+      'wa_fld'      : _wa,
+})
+
+# Simulation options
+class_k_max = {}
+class_reuse = True
+class_plot_perturbations = False
+class_extra_background = []
+class_extra_perturbations = []
+
+# System of units
+unit_length = 'Mpc'
+unit_time   = 'Gyr'
+unit_mass   = '10¹⁰ m☉'

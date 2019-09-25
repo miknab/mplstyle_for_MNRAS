@@ -1,0 +1,43 @@
+#!/bin/bash -l
+#SBATCH --account=pr48
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=zbox.msg@gmail.com
+#SBATCH --time=24:00:00
+#SBATCH --nodes=32
+#SBATCH --ntasks-per-core=2
+#SBATCH --ntasks-per-node=1  # This is a PKDGRAV3-specific setting that must not be changed in any case!
+#SBATCH --cpus-per-task=24
+#SBATCH --partition=normal
+#SBATCH --constraint=gpu
+#SBATCH --hint=multithread
+
+
+#SET UP SRUN COMMAND:
+#====================
+
+export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+
+printf -v CHKSTEP "%05d" $1
+NAME="C064.PF1"
+
+cmd="srun ./pkdgrav3 chk/${NAME}.${CHKSTEP}.chk"
+
+
+#START EXECUTION:
+#================
+
+STARTTIME=`date '+%Y-%m-%d %H:%M:%S'`
+
+echo "*****************************************************"
+echo "Parameter file: ${NAME}.par"
+echo "Job name: ${SLURM_JOB_NAME}"
+echo "No of nodes: ${SLURM_NNODES}"
+echo "Start: ${STARTTIME}"
+echo "*****************************************************"
+
+echo ${cmd}
+${cmd}
+
+ENDTIME=`date '+%Y-%m-%d %H:%M:%S'`
+echo "End: ${ENDTIME}"
+echo "Done!"

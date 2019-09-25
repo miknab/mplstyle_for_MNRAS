@@ -1,0 +1,83 @@
+# Memory and performance
+# ----------------------
+bMemUnordered    = 1      # Order replaced by potential and group id
+bNewKDK          = 1      # No accelerations in the particle, dual tree possible
+bDualTree        = 1      # Use two trees
+bMemPotential    = 0
+nBucket          = 24
+dExtraStore      = 0.02
+
+# Simulation Mode
+# ---------------
+# In the bClass=1 mode the cosmology is entirely read from the
+# HDF5 file specified in 'achClassFilename' parameter below.
+bClass           = 1
+dOmega0          = 0.0    # This is a dummy parameter, just to have the parameter define
+# Initial Condition
+# -----------------
+dBoxSize         = 1000   # Mpc/h
+nGrid            = 3000   # Simulation has nGrid^3 particles
+b2LPT            = 0      # second order IC
+iSeed            = 31415  # Random seed ==> Cosmic variance is the same across all cosmologies
+dRedFrom         = 99     # Starting redshift
+bFixedAmpIC      = 1      # we use P+F to get rid of cosmic variance
+dFixedAmpPhasePI = 1
+
+# Measure P(k)
+# ------------
+nGridPk          = 3000
+iPkInterval      = 1
+iDeltakInterval  = 3
+
+# Linear theory
+# -------------
+achClassFilename = "C174.hdf5"
+nGridLin         = 750
+achLinSpecies    = "g+ncdm[0]+fld+metric" # these species are considered in the evolution
+achPkSpecies     = "g+ncdm[0]+fld"        # these species are considered in the power computation
+dNormalization   = 1.891125780e-09
+dSpectral        = 9.393403930e-01
+
+# Simulation parameters
+# ---------------------
+iStartStep       = 0
+nSteps           = 160
+nSteps10         = 60
+dRedTo           = 0
+
+# Logging/Output
+# --------------
+bWriteIC         = 0
+iLogInterval     = 1     # Log every major time step
+iOutInterval     = 0     # Do not dump snapshots
+iCheckInterval   = 40    # Checkpoints
+iWallRunTime     = 1320  # = 22 hours
+bDoDensity       = 0
+bVDetails        = 1
+dHubble0         = 2.8944050182330705
+bOverwrite       = 1
+bParaRead        = 1     # Read in parallel
+bParaWrite       = 1     # Write in parallel (does not work on all file systems)
+nParaRead        = 28    # setting this to the number of nodes is a reasonable choice
+nParaWrite       = 28    # setting this to the number of nodes is a reasonable choice
+
+# Cosmological Simulation
+# -----------------------
+bComove          = 1     # Use comoving coordinates
+bPeriodic        = 1     # with a periodic box
+bEwald           = 1     # enable Ewald periodic boundaries
+
+# Accuracy Parameters
+# -------------------
+bEpsAccStep      = 1     # Choose eps/a timestep criteria
+dTheta           = 0.40  # accuracy of forces for z > 20
+dTheta20         = 0.55
+dTheta2          = 0.70
+dEta             = 0.20
+
+# Do fewer domain decompositions
+# ------------------------------
+dFracNoDomainDimChoice = 0.10
+dFracNoDomainRootFind  = 0.10
+dFracNoDomainDecomp    = 0.10
+dFracDualTree          = 0.05
